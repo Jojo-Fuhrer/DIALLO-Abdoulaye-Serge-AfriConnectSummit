@@ -1,0 +1,1109 @@
+/* ==========================================================================
+   AFRICONNECT SUMMIT — FEUILLE DE STYLE PRINCIPALE
+   Palette : braise orangée + verre liquide (glassmorphism)
+   Polices : Fraunces (titres) / Work Sans (texte courant)
+   Auteur : NOM Prenom — Groupe ISI — 2026
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. RÉINITIALISATION LÉGÈRE
+   -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+  border: none;
+  background: none;
+}
+
+/* --------------------------------------------------------------------------
+   2. VARIABLES CSS (jeton de design) — mode clair par défaut sur :root,
+      puis surcharge complète dans [data-theme="dark"].
+   -------------------------------------------------------------------------- */
+:root {
+  /* Couleurs de marque — braise, ambre, rouille */
+  --braise: #ff5a1f;
+  --braise-vive: #ff7a3d;
+  --ambre: #ffb347;
+  --rouille: #a83a12;
+  --sable: #fff3e6;
+
+  /* Surfaces (mode clair) */
+  --fond: #fff8f2;
+  --fond-alt: #ffece0;
+  --surface: rgba(255, 255, 255, 0.55);
+  --surface-bordure: rgba(168, 58, 18, 0.18);
+  --texte: #241407;
+  --texte-attenue: #6b4a36;
+  --ombre-verre: 0 8px 32px rgba(168, 58, 18, 0.12);
+
+  /* Typographie */
+  --police-titre: "Fraunces", Georgia, serif;
+  --police-texte: "Work Sans", system-ui, sans-serif;
+
+  /* Échelle d'espacement */
+  --e-1: 0.5rem;
+  --e-2: 1rem;
+  --e-3: 1.5rem;
+  --e-4: 2.5rem;
+  --e-5: 4.5rem;
+
+  /* Rayons & transitions */
+  --rayon-s: 10px;
+  --rayon-m: 18px;
+  --rayon-l: 30px;
+  --vitesse: 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  --flou-verre: 16px;
+}
+
+[data-theme="dark"] {
+  --fond: #130b07;
+  --fond-alt: #1c1109;
+  --surface: rgba(255, 122, 61, 0.07);
+  --surface-bordure: rgba(255, 179, 71, 0.18);
+  --texte: #fdece0;
+  --texte-attenue: #d8b49b;
+  --ombre-verre: 0 8px 40px rgba(0, 0, 0, 0.45);
+}
+
+body {
+  font-family: var(--police-texte);
+  background-color: var(--fond);
+  color: var(--texte);
+  line-height: 1.6;
+  transition: background-color var(--vitesse), color var(--vitesse);
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--police-titre);
+  line-height: 1.1;
+  font-weight: 600;
+}
+
+.conteneur {
+  width: min(1180px, 92%);
+  margin-inline: auto;
+}
+
+/* --------------------------------------------------------------------------
+   3. FOND « VERRE LIQUIDE » — élément signature du site.
+      Trois nappes de dégradé flou qui dérivent lentement derrière
+      les panneaux vitrés, comme de la lave en fusion.
+   -------------------------------------------------------------------------- */
+.nappe-liquide {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.nappe-liquide::before,
+.nappe-liquide::after,
+.nappe-liquide span {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.55;
+}
+
+.nappe-liquide::before {
+  width: 46vw;
+  height: 46vw;
+  top: -12vw;
+  left: -10vw;
+  background: radial-gradient(circle, var(--braise) 0%, transparent 70%);
+  animation: deriver-un 22s ease-in-out infinite alternate;
+}
+
+.nappe-liquide::after {
+  width: 40vw;
+  height: 40vw;
+  bottom: -14vw;
+  right: -8vw;
+  background: radial-gradient(circle, var(--ambre) 0%, transparent 70%);
+  animation: deriver-deux 26s ease-in-out infinite alternate;
+}
+
+.nappe-liquide span {
+  width: 30vw;
+  height: 30vw;
+  top: 40%;
+  left: 55%;
+  background: radial-gradient(circle, var(--rouille) 0%, transparent 70%);
+  animation: deriver-trois 30s ease-in-out infinite alternate;
+}
+
+@keyframes deriver-un {
+  to {
+    transform: translate(8vw, 10vw) scale(1.15);
+  }
+}
+@keyframes deriver-deux {
+  to {
+    transform: translate(-6vw, -8vw) scale(1.1);
+  }
+}
+@keyframes deriver-trois {
+  to {
+    transform: translate(-10vw, 6vw) scale(0.9);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nappe-liquide::before,
+  .nappe-liquide::after,
+  .nappe-liquide span {
+    animation: none;
+  }
+}
+
+/* Carte vitrée réutilisable */
+.verre {
+  background: var(--surface);
+  border: 1px solid var(--surface-bordure);
+  backdrop-filter: blur(var(--flou-verre));
+  -webkit-backdrop-filter: blur(var(--flou-verre));
+  border-radius: var(--rayon-m);
+  box-shadow: var(--ombre-verre);
+}
+
+/* --------------------------------------------------------------------------
+   4. NAVIGATION
+   -------------------------------------------------------------------------- */
+.barre-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: var(--e-2) 0;
+  transition: background-color var(--vitesse), box-shadow var(--vitesse), padding var(--vitesse);
+}
+
+.barre-nav.au-scroll {
+  background: var(--surface);
+  backdrop-filter: blur(var(--flou-verre));
+  -webkit-backdrop-filter: blur(var(--flou-verre));
+  box-shadow: var(--ombre-verre);
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--surface-bordure);
+}
+
+.barre-nav .conteneur {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo-nav {
+  font-family: var(--police-titre);
+  font-size: 1.15rem;
+  font-weight: 700;
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+.logo-nav .accent {
+  color: var(--braise);
+}
+
+.liens-nav {
+  display: flex;
+  gap: var(--e-3);
+  align-items: center;
+}
+
+.liens-nav a {
+  position: relative;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding-block: 0.25rem;
+}
+
+.liens-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 2px;
+  background: var(--braise);
+  transition: width var(--vitesse);
+}
+
+.liens-nav a:hover::after,
+.liens-nav a.actif::after {
+  width: 100%;
+}
+
+.liens-nav a.actif {
+  color: var(--braise);
+}
+
+.outils-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--e-2);
+}
+
+.bascule-theme {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  border: 1px solid var(--surface-bordure);
+  background: var(--surface);
+  transition: transform var(--vitesse);
+}
+
+.bascule-theme:hover {
+  transform: rotate(20deg);
+}
+
+.icone-lune {
+  display: none;
+}
+[data-theme="dark"] .icone-soleil {
+  display: none;
+}
+[data-theme="dark"] .icone-lune {
+  display: inline;
+}
+
+.bouton-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  width: 30px;
+  cursor: pointer;
+}
+
+.bouton-hamburger span {
+  height: 2px;
+  background: var(--texte);
+  border-radius: 2px;
+  transition: transform var(--vitesse), opacity var(--vitesse);
+}
+
+.bouton-hamburger.ouvert span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.bouton-hamburger.ouvert span:nth-child(2) {
+  opacity: 0;
+}
+.bouton-hamburger.ouvert span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* --------------------------------------------------------------------------
+   5. HÉROS — PAGE D'ACCUEIL
+   -------------------------------------------------------------------------- */
+.heros {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-top: 6rem;
+  position: relative;
+}
+
+.eyebrow {
+  font-size: 0.85rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--braise);
+  font-weight: 600;
+  margin-bottom: var(--e-2);
+}
+
+.titre-heros {
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  max-width: 16ch;
+  margin-inline: auto; /* corrige le décalage à gauche : centre le bloc, pas seulement le texte dedans */
+  background: linear-gradient(120deg, var(--texte) 40%, var(--braise) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.sous-titre-heros {
+  margin-top: var(--e-3);
+  margin-inline: auto;
+  font-size: 1.15rem;
+  color: var(--texte-attenue);
+  max-width: 46ch;
+}
+
+.cta-heros {
+  margin-top: var(--e-4);
+  display: flex;
+  gap: var(--e-2);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.bouton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.8rem;
+  border-radius: var(--rayon-l);
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform var(--vitesse), box-shadow var(--vitesse);
+}
+
+.bouton-plein {
+  background: linear-gradient(120deg, var(--braise), var(--rouille));
+  color: #fff8f2;
+  box-shadow: 0 10px 24px rgba(255, 90, 31, 0.35);
+}
+
+.bouton-fantome {
+  border: 1px solid var(--surface-bordure);
+  background: var(--surface);
+  backdrop-filter: blur(var(--flou-verre));
+}
+
+.bouton:hover {
+  transform: translateY(-3px);
+}
+
+/* Compte à rebours */
+.compte-rebours {
+  margin-top: var(--e-5);
+  display: flex;
+  gap: var(--e-2);
+}
+
+.unite-temps {
+  padding: var(--e-2) var(--e-3);
+  min-width: 84px;
+  text-align: center;
+}
+
+.unite-temps strong {
+  display: block;
+  font-family: var(--police-titre);
+  font-size: 2rem;
+  color: var(--braise);
+}
+
+.unite-temps span {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--texte-attenue);
+}
+
+/* --------------------------------------------------------------------------
+   6. SECTIONS GÉNÉRIQUES
+   -------------------------------------------------------------------------- */
+section {
+  padding-block: var(--e-5);
+}
+
+.entete-section {
+  text-align: center;
+  max-width: 60ch;
+  margin-inline: auto;
+  margin-bottom: var(--e-4);
+}
+
+.entete-section h2 {
+  font-size: clamp(1.9rem, 3.5vw, 2.6rem);
+}
+
+.entete-section p {
+  color: var(--texte-attenue);
+  margin-top: var(--e-1);
+}
+
+/* Révélation au scroll (IntersectionObserver ajoute .visible) */
+.reveler {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveler.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveler.zoom {
+  transform: scale(0.9);
+}
+.reveler.zoom.visible {
+  transform: scale(1);
+}
+.reveler.glisser-gauche {
+  transform: translateX(-40px);
+}
+.reveler.glisser-gauche.visible {
+  transform: translateX(0);
+}
+
+/* Chiffres clés — CSS Grid */
+.grille-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--e-3);
+}
+
+.carte-stat {
+  padding: var(--e-4) var(--e-2);
+  text-align: center;
+}
+
+.carte-stat strong {
+  font-family: var(--police-titre);
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  color: var(--braise);
+  display: block;
+}
+
+.carte-stat span {
+  color: var(--texte-attenue);
+  font-size: 0.95rem;
+}
+
+/* Pourquoi participer — Flexbox */
+.rangee-arguments {
+  display: flex;
+  gap: var(--e-3);
+  flex-wrap: wrap;
+}
+
+.carte-argument {
+  flex: 1 1 260px;
+  padding: var(--e-3);
+  transition: transform var(--vitesse);
+}
+
+.carte-argument:hover {
+  transform: translateY(-6px);
+}
+
+.icone-argument {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--rayon-s);
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--braise), var(--ambre));
+  color: #fff;
+  font-size: 1.3rem;
+  margin-bottom: var(--e-2);
+}
+
+.carte-argument h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.4rem;
+}
+
+.carte-argument p {
+  color: var(--texte-attenue);
+  font-size: 0.95rem;
+}
+
+/* Intervenants vedettes / grille — CSS Grid */
+.grille-intervenants {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--e-3);
+}
+
+.grille-intervenants.neuf {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.carte-intervenant {
+  overflow: hidden;
+  text-align: center;
+  padding-bottom: var(--e-3);
+  transition: transform var(--vitesse), box-shadow var(--vitesse);
+}
+
+.carte-intervenant:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 40px rgba(168, 58, 18, 0.22);
+}
+
+.avatar-intervenant {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  font-family: var(--police-titre);
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #fff8f2;
+  object-fit: cover; /* si l'élément est une <img>, la photo remplit le carré sans se déformer */
+}
+
+/* Dégradés d'avatars — un par intervenant, aucun style inline dans le HTML */
+.avatar-1 { background: linear-gradient(135deg, #ff5a1f, #a83a12); }
+.avatar-2 { background: linear-gradient(135deg, #ffb347, #ff5a1f); }
+.avatar-3 { background: linear-gradient(145deg, #c1440e, #ffb347); }
+.avatar-4 { background: linear-gradient(135deg, #a83a12, #ffb347); }
+.avatar-5 { background: linear-gradient(125deg, #ff7a3d, #a83a12); }
+.avatar-6 { background: linear-gradient(135deg, #ffb347, #c1440e); }
+.avatar-7 { background: linear-gradient(145deg, #ffb347, #a83a12); }
+.avatar-8 { background: linear-gradient(135deg, #a83a12, #ff5a1f); }
+.avatar-9 { background: linear-gradient(125deg, #ff5a1f, #ffb347); }
+
+.carte-intervenant h3 {
+  margin-top: var(--e-2);
+  font-size: 1.05rem;
+}
+
+.carte-intervenant .fonction {
+  font-size: 0.85rem;
+  color: var(--texte-attenue);
+}
+
+.carte-intervenant .pays {
+  font-size: 0.8rem;
+  color: var(--braise);
+  font-weight: 600;
+  margin-top: 0.3rem;
+}
+
+.carte-intervenant .tag-theme {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-size: 0.7rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--surface-bordure);
+  color: var(--texte-attenue);
+}
+
+.centrer-bouton {
+  text-align: center;
+  margin-top: var(--e-4);
+}
+
+/* Sponsors — Flexbox, tailles différenciées */
+.rangees-sponsors {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-3);
+}
+
+.niveau-sponsor {
+  display: flex;
+  gap: var(--e-3);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.puce-sponsor {
+  display: grid;
+  place-items: center;
+  font-family: var(--police-titre);
+  font-weight: 700;
+  color: var(--texte-attenue);
+}
+
+.niveau-or .puce-sponsor {
+  width: 170px;
+  height: 90px;
+  font-size: 1.1rem;
+  border: 1px solid var(--ambre);
+}
+
+.niveau-argent .puce-sponsor {
+  width: 130px;
+  height: 70px;
+  font-size: 0.95rem;
+}
+
+.niveau-bronze .puce-sponsor {
+  width: 100px;
+  height: 56px;
+  font-size: 0.8rem;
+}
+
+/* --------------------------------------------------------------------------
+   7. PIED DE PAGE
+   -------------------------------------------------------------------------- */
+.pied-page {
+  padding-block: var(--e-4);
+  border-top: 1px solid var(--surface-bordure);
+}
+
+.grille-pied {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--e-3);
+  flex-wrap: wrap;
+}
+
+.colonne-pied h4 {
+  margin-bottom: var(--e-2);
+  font-size: 1rem;
+}
+
+.colonne-pied ul li {
+  margin-bottom: 0.5rem;
+}
+
+.colonne-pied a:hover {
+  color: var(--braise);
+}
+
+.reseaux-sociaux {
+  display: flex;
+  gap: 0.7rem;
+}
+
+.reseaux-sociaux a {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--surface-bordure);
+  transition: background var(--vitesse), transform var(--vitesse);
+}
+
+.reseaux-sociaux a:hover {
+  background: var(--braise);
+  color: #fff;
+  transform: translateY(-3px);
+}
+
+.bas-pied {
+  margin-top: var(--e-4);
+  padding-top: var(--e-2);
+  border-top: 1px solid var(--surface-bordure);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--e-2);
+  font-size: 0.85rem;
+  color: var(--texte-attenue);
+}
+
+.bouton-haut {
+  position: fixed;
+  right: var(--e-3);
+  bottom: var(--e-3);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--braise);
+  color: #fff;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px);
+  transition: opacity var(--vitesse), transform var(--vitesse);
+  z-index: 90;
+}
+
+.bouton-haut.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* --------------------------------------------------------------------------
+   8. PAGES INTERNES — HÉROS BANNIÈRE + FIL D'ARIANE
+   -------------------------------------------------------------------------- */
+.heros-interne {
+  padding-top: 8rem;
+  padding-bottom: var(--e-4);
+  text-align: center;
+}
+
+.fil-ariane {
+  margin-top: var(--e-2);
+  font-size: 0.9rem;
+  color: var(--texte-attenue);
+}
+
+.fil-ariane a:hover {
+  color: var(--braise);
+}
+
+.fil-ariane .separateur {
+  margin-inline: 0.4rem;
+}
+
+/* --------------------------------------------------------------------------
+   9. PROGRAMME — ONGLETS + TABLEAU
+   -------------------------------------------------------------------------- */
+.onglets-jours {
+  display: flex;
+  justify-content: center;
+  gap: var(--e-2);
+  margin-bottom: var(--e-4);
+  flex-wrap: wrap;
+}
+
+.onglet {
+  padding: 0.7rem 1.6rem;
+  border-radius: var(--rayon-l);
+  cursor: pointer;
+  font-weight: 600;
+  border: 1px solid var(--surface-bordure);
+}
+
+.onglet.actif {
+  background: linear-gradient(120deg, var(--braise), var(--rouille));
+  color: #fff;
+}
+
+.panneau-jour {
+  display: none;
+}
+
+.panneau-jour.actif {
+  display: block;
+}
+
+.table-programme {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border-radius: var(--rayon-m);
+}
+
+.table-programme th,
+.table-programme td {
+  padding: 0.9rem 1rem;
+  text-align: left;
+  font-size: 0.92rem;
+}
+
+.table-programme thead {
+  background: linear-gradient(120deg, var(--braise), var(--rouille));
+  color: #fff8f2;
+}
+
+.table-programme tbody tr:nth-child(odd) {
+  background: var(--surface);
+}
+
+.table-programme tbody tr:hover {
+  background: var(--fond-alt);
+}
+
+/* Thématiques — Grid 2x2 */
+.grille-thematiques {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--e-3);
+}
+
+.carte-thematique {
+  padding: var(--e-3);
+}
+
+.carte-thematique .icone-argument {
+  margin-inline: auto;
+}
+
+.carte-thematique {
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   10. INTERVENANTS — FILTRAGE
+   -------------------------------------------------------------------------- */
+.filtres-intervenants {
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: var(--e-4);
+}
+
+.filtre {
+  padding: 0.55rem 1.2rem;
+  border-radius: var(--rayon-l);
+  border: 1px solid var(--surface-bordure);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.filtre.actif {
+  background: var(--braise);
+  color: #fff;
+  border-color: var(--braise);
+}
+
+.carte-intervenant.masquee {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   11. CONTACT — FORMULAIRE + FAQ + CARTE
+   -------------------------------------------------------------------------- */
+.disposition-contact {
+  display: flex;
+  gap: var(--e-4);
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.colonne-formulaire {
+  flex: 1 1 420px;
+  padding: var(--e-4);
+}
+
+.colonne-infos {
+  flex: 1 1 300px;
+  padding: var(--e-4);
+}
+
+.groupe-champ {
+  margin-bottom: var(--e-3);
+}
+
+.groupe-champ label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.groupe-champ input,
+.groupe-champ select,
+.groupe-champ textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border-radius: var(--rayon-s);
+  border: 1px solid var(--surface-bordure);
+  background: var(--surface);
+  transition: border-color var(--vitesse);
+}
+
+.groupe-champ input:focus,
+.groupe-champ select:focus,
+.groupe-champ textarea:focus {
+  outline: none;
+  border-color: var(--braise);
+}
+
+.groupe-champ.erreur input,
+.groupe-champ.erreur select,
+.groupe-champ.erreur textarea {
+  border-color: #d1483a;
+}
+
+.groupe-champ.valide input,
+.groupe-champ.valide select,
+.groupe-champ.valide textarea {
+  border-color: #4a9b6e;
+}
+
+.message-erreur {
+  display: none;
+  color: #d1483a;
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+}
+
+.groupe-champ.erreur .message-erreur {
+  display: block;
+}
+
+.message-succes {
+  display: none;
+  margin-top: var(--e-2);
+  padding: var(--e-2);
+  border-radius: var(--rayon-s);
+  background: rgba(74, 155, 110, 0.15);
+  border: 1px solid #4a9b6e;
+  color: #2e7a4f;
+}
+
+[data-theme="dark"] .message-succes {
+  color: #8fd6ab;
+}
+
+.message-succes.visible {
+  display: block;
+}
+
+.liste-infos li {
+  margin-bottom: var(--e-2);
+  display: flex;
+  gap: 0.6rem;
+}
+
+/* FAQ en accordéon CSS pur */
+.accordeon-faq {
+  max-width: 780px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-2);
+}
+
+.item-faq {
+  overflow: hidden;
+  padding: 0;
+}
+
+.item-faq input {
+  display: none;
+}
+
+.entete-faq {
+  display: block;
+  padding: var(--e-2) var(--e-3);
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.entete-faq::after {
+  content: "+";
+  font-size: 1.3rem;
+  color: var(--braise);
+  transition: transform var(--vitesse);
+}
+
+.item-faq input:checked ~ .entete-faq::after {
+  transform: rotate(45deg);
+}
+
+.corps-faq {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--vitesse), padding var(--vitesse);
+  padding: 0 var(--e-3);
+  color: var(--texte-attenue);
+  font-size: 0.92rem;
+}
+
+.item-faq input:checked ~ .corps-faq {
+  max-height: 220px;
+  padding: 0 var(--e-3) var(--e-3);
+}
+
+.carte-maps {
+  margin-top: var(--e-4);
+  overflow: hidden;
+  padding: var(--e-1);
+}
+
+.carte-maps iframe {
+  width: 100%;
+  height: 340px;
+  border: 0;
+  border-radius: var(--rayon-m);
+}
+
+/* --------------------------------------------------------------------------
+   12. RESPONSIVE — MOBILE (375px) / TABLETTE (768px) / DESKTOP (1200px+)
+   -------------------------------------------------------------------------- */
+@media (max-width: 992px) {
+  .grille-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .grille-intervenants {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .grille-intervenants.neuf {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .liens-nav {
+    position: fixed;
+    top: 68px;
+    right: 0;
+    left: 0;
+    flex-direction: column;
+    padding: var(--e-3);
+    background: var(--fond);
+    border-bottom: 1px solid var(--surface-bordure);
+    transform: translateY(-140%);
+    transition: transform var(--vitesse);
+  }
+
+  .liens-nav.ouvert {
+    transform: translateY(0);
+  }
+
+  .bouton-hamburger {
+    display: flex;
+  }
+
+  .grille-thematiques {
+    grid-template-columns: 1fr;
+  }
+
+  .disposition-contact {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .grille-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+  .grille-intervenants,
+  .grille-intervenants.neuf {
+    grid-template-columns: 1fr;
+  }
+  .compte-rebours {
+    gap: 0.6rem;
+  }
+  .unite-temps {
+    min-width: 64px;
+    padding: 0.8rem;
+  }
+  .rangee-arguments {
+    flex-direction: column;
+  }
+}
