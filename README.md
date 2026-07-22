@@ -1,6 +1,6 @@
 # AfriConnect Summit 2026
 
-**Nom / Classe :** NOM Prenom — Groupe ISI, L1
+**Nom / Classe :** DIALLO Abdooulaye Serge — Groupe ISI, L1 CS
 **Projet :** Examen Web — Site vitrine d'une conférence tech fictive panafricaine
 **Durée :** 2 semaines
 
@@ -68,7 +68,7 @@ balises `<img>` avec un attribut `alt` descriptif.
 
 ## Lien GitHub Pages
 
-À compléter après déploiement : `https://VOTRE-PSEUDO.github.io/NOM-Prenom-AfriConnectSummit/`
+À compléter après déploiement : `https://jojo-fuhrer.github.io/DIALLO-Abdoulaye-Serge-AfriConnectSummit/`
 
 ## Ressources consultées
 
